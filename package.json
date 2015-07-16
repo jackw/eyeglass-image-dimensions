@@ -1,0 +1,25 @@
+{
+  "name": "eyeglass-imagesize",
+  "description": "Grab image dimensions inside SASS",
+  "version": "0.0.1",
+  "author": {
+    "name": "Jack Westbrook",
+    "email": "jack.westbrook@gmail.com",
+    "url": "https://github.com/jackw"
+  },
+  "license": "Apache-2.0",
+  "README": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackw/eyeglass-imagesize.git"
+  },
+  "devDependencies": {
+    "eslint": "^1.0.0-rc-1",
+    "eyeglass-dev-eslint": "^1.0.1",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^0.15.0"
+  },
+  "dependencies": {
+    "image-size": "^0.3.5"
+  }
+}
