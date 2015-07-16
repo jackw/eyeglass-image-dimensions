@@ -1,12 +1,14 @@
 {
-  "name": "eyeglass-imagesize",
-  "description": "Grab image dimensions inside SASS",
+  "name": "eyeglass-image-dimensions",
   "version": "0.0.1",
+  "description": "Grab image dimensions inside SASS",
   "author": {
     "name": "Jack Westbrook",
     "email": "jack.westbrook@gmail.com",
     "url": "https://github.com/jackw"
   },
+  "keywords": ["eyeglass-module", "sass"],
+  "main": "eyeglass-exports.js",
   "license": "Apache-2.0",
   "README": "README.md",
   "repository": {
