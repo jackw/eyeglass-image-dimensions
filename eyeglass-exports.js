@@ -1,7 +1,7 @@
 "use strict";
 
 var path = require("path");
-var imageSize = require("ImageSize.js");
+var imageDimensions = require("./ImageDimensions");
 
 module.exports = function(eyeglass, sass) {
   return {
