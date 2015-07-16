@@ -1,4 +1,12 @@
 
-@function image-size($assetPath) {
-	@return eyeglassImageSize($assetPath);
+@function image-width($assetPath) {
+	@return eyeglass-image-width($assetPath);
+}
+
+@function image-height($assetPath) {
+	@return eyeglass-image-height($assetPath);
+}
+
+@function image-dimensions($assetPath) {
+	@return eyeglass-image-dimensions($assetPath);
 }
