@@ -25,6 +25,8 @@
     "gulp-eslint": "^0.15.0"
   },
   "dependencies": {
-    "image-size": "^0.3.5"
+    "eyeglass": "*",
+    "image-size": "^0.3.5",
+    "node-sass-utils": "^1.1.1"
   }
 }

@@ -1,3 +1,4 @@
+@import "eyeglass/assets";
 
 @function image-width($assetPath) {
 	@return eyeglass-image-width($assetPath);
