@@ -1,5 +1,7 @@
 @import "eyeglass/assets";
 
+//@debug map-get($eg-registered-assets, null);
+
 @function image-width($assetPath) {
 	@return eyeglass-image-width($assetPath);
 }
