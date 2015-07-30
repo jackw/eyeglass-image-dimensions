@@ -1,15 +1,13 @@
 @import "eyeglass/assets";
 
-//@debug map-get($eg-registered-assets, null);
-
 @function image-width($assetPath) {
-	@return eyeglass-image-width($assetPath);
+	@return eg-image-width($assetPath, $eg-registered-assets);
 }
 
 @function image-height($assetPath) {
-	@return eyeglass-image-height($assetPath);
+	@return eg-image-height($assetPath, $eg-registered-assets);
 }
 
 @function image-dimensions($assetPath) {
-	@return eyeglass-image-dimensions($assetPath);
+	@return eg-image-dimensions($assetPath, $eg-registered-assets);
 }
