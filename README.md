@@ -3,7 +3,7 @@ An eyeglass module aimed at providing sass the same image dimensions functionali
 
 Setup:
 
-Right now there isn't an npm package so you'll need to manually download and add it to your project's node_modules folder.
+Right now there isn't an npm package so you'll need to manually download and add it to your project's node_modules folder then run npm install to bring down dependancies.
 Then add the following to your sass file/s:
 
 ```

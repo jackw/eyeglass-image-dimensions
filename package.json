@@ -22,12 +22,12 @@
     "eslint": "^1.0.0-rc-1",
     "eyeglass-dev-eslint": "^1.0.1",
     "gulp": "^3.9.0",
-    "gulp-eslint": "^0.15.0",
-    "promise": "^7.0.3"
+    "gulp-eslint": "^0.15.0"
   },
   "dependencies": {
     "eyeglass": "*",
     "image-size": "^0.3.5",
-    "node-sass-utils": "^1.1.1"
+    "node-sass-utils": "^1.1.1",
+    "promise": "^7.0.3"
   }
 }
