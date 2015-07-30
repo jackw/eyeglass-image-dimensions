@@ -2,146 +2,144 @@
 
 var fs = require("fs");
 var path = require("path");
-var sizeOf = require('image-size');
-var Promise = require('promise');
+var sizeOf = require("image-size");
+var Promise = require("promise");
 
 module.exports = function(eyeglass, sass) {
-	var sassUtils = require('node-sass-utils')(sass);
+  var sassUtils = require("node-sass-utils")(sass);
 
-	function getDimensions(file) {
+  function getDimensions(file) {
 
-		return new Promise(function (resolve, reject) {
-			sizeOf(file, function (err, dimensions) {
+    return new Promise(function (resolve, reject) {
 
-				if (err) {
-					return reject(err);
-				}
+      sizeOf(file, function (err, dimensions) {
 
-				return resolve({
-					height: new sassUtils.SassDimension(dimensions.height, 'px'),
-					width: new sassUtils.SassDimension(dimensions.width, 'px')
-				});
-			});
-		})
-	}
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve({
+          height: new sassUtils.SassDimension(dimensions.height, "px"),
+          width: new sassUtils.SassDimension(dimensions.width, "px")
+        });
+      });
+
+    });
+
+  }
 
 
-	function checkImagePath(file, registeredAssets) {
+  function checkImagePath(file, registeredAssets) {
 
-		registeredAssets = sassUtils.castToJs(registeredAssets);
+    registeredAssets = sassUtils.castToJs(registeredAssets);
 
-		return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
 
-			fs.lstat(file, function(err, stats) {
+      fs.lstat(file, function(err, stats) {
 
-				if (err) {
-					// can't find file from path provided so check assets
-					if (err.code === 'ENOENT') {
-						// loop assets and check for a matching file.
-						registeredAssets.forEach(function(asset) {
-							asset = sassUtils.castToJs(asset);
+        if (err) {
+          // can"t find file from path provided so check assets
+          if (err.code === "ENOENT") {
+            // loop assets and check for a matching file.
+            registeredAssets.forEach(function(asset) {
+              asset = sassUtils.castToJs(asset);
 
-							asset.forEach(function(assetData, assetName) {
-								assetName = sassUtils.castToJs(assetName);
-								assetData = sassUtils.castToJs(assetData);
+              asset.forEach(function(assetData, assetName) {
+                assetName = sassUtils.castToJs(assetName);
+                assetData = sassUtils.castToJs(assetData);
 
-								if (assetName == file) {
-									return resolve(assetData.coerce.get('filepath'));
-								}
+                if (assetName === file) {
+                  return resolve(assetData.coerce.get("filepath"));
+                }
 
-							});
+              });
 
-						});
-					}
+            });
+          }
 
-					return reject(err);
-				}
+          return reject(err);
+        }
 
-				return resolve(file);
-			});
+        return resolve(file);
+      });
 
-		});
-	}
+    });
+  }
 
-	return {
-		// point eyeglass in the direction of image-dimensions sass
-		sassDir: path.join(__dirname, "sass"),
-		// return the functions used by the sass wrappers.
-		functions: {
-			"eg-image-width($assetPath, $registeredAssets)":
-			function(assetPath, registeredAssets, done) {
+  return {
+    sassDir: path.join(__dirname, "sass"),
+    functions: {
+      "eg-image-width($assetPath, $registeredAssets)":
+      function(assetPath, registeredAssets, done) {
 
-				sassUtils.assertType(assetPath, "string");
-				sassUtils.assertType(registeredAssets, "map");
+        sassUtils.assertType(assetPath, "string");
+        sassUtils.assertType(registeredAssets, "map");
 
-				assetPath = assetPath.getValue();
+        assetPath = assetPath.getValue();
 
-				var imageInfo = checkImagePath(assetPath, registeredAssets);
+        var imageInfo = checkImagePath(assetPath, registeredAssets);
 
-				imageInfo.then(function (success) {
-					var imageDimensions = getDimensions(success);
+        imageInfo.then(function (success) {
+          var imageDimensions = getDimensions(success);
 
-					imageDimensions.then(function (success) {
-						done(sass.types.String(success.width.sassString()));
-					}, function (err) {
-						done(sass.types.Error(err.message));
-					});
+          imageDimensions.then(function (dimensions) {
+            done(sass.types.String(dimensions.width.sassString()));
+          }, function (err) {
+            done(sass.types.Error(err.message));
+          });
 
-				}, function (err) {
-					done(sass.types.Error(err.message));
-				});
+        }, function (err) {
+          done(sass.types.Error(err.message));
+        });
 
-			},
-			"eg-image-height($assetPath, $registeredAssets)":
-			function(assetPath, registeredAssets, done) {
+      },
+      "eg-image-height($assetPath, $registeredAssets)":
+      function(assetPath, registeredAssets, done) {
 
-				sassUtils.assertType(assetPath, "string");
-				sassUtils.assertType(registeredAssets, "map");
+        sassUtils.assertType(assetPath, "string");
+        sassUtils.assertType(registeredAssets, "map");
 
-				assetPath = assetPath.getValue();
+        assetPath = assetPath.getValue();
 
-				var imageInfo = checkImagePath(assetPath, registeredAssets);
+        var imageInfo = checkImagePath(assetPath, registeredAssets);
 
-				imageInfo.then(function (success) {
-					var imageDimensions = getDimensions(success);
+        imageInfo.then(function (success) {
+          var imageDimensions = getDimensions(success);
 
-					imageDimensions.then(function (success) {
-						done(sass.types.String(success.height.sassString()));
-					}, function (err) {
-						done(sass.types.Error(err.message));
-					});
+          imageDimensions.then(function (dimensions) {
+            done(sass.types.String(dimensions.height.sassString()));
+          }, function (err) {
+            done(sass.types.Error(err.message));
+          });
 
-				}, function (err) {
-					done(sass.types.Error(err.message));
-				});
+        }, function (err) {
+          done(sass.types.Error(err.message));
+        });
 
-			},
-			"eg-image-dimensions($assetPath, $registeredAssets)":
-			function(assetPath, registeredAssets, done) {
+      },
+      "eg-image-dimensions($assetPath, $registeredAssets)":
+      function(assetPath, registeredAssets, done) {
 
-				sassUtils.assertType(assetPath, "string");
-				sassUtils.assertType(registeredAssets, "map");
+        sassUtils.assertType(assetPath, "string");
+        sassUtils.assertType(registeredAssets, "map");
 
-				assetPath = assetPath.getValue();
+        assetPath = assetPath.getValue();
 
-				var imageInfo = checkImagePath(assetPath, registeredAssets);
+        var imageInfo = checkImagePath(assetPath, registeredAssets);
 
-				imageInfo.then(function (success) {
-					var imageDimensions = getDimensions(success);
+        imageInfo.then(function (success) {
+          var imageDimensions = getDimensions(success);
 
-					imageDimensions.then(function (success) {
-						done(sass.types.String(success.width.sassString() + ' ' + success.height.sassString()));
-					}, function (err) {
-						done(sass.types.Error(err.message));
-					});
+          imageDimensions.then(function (dimensions) {
+            done(sass.types.String(dimensions.width.sassString() + " " + dimensions.height.sassString()));
+          }, function (err) {
+            done(sass.types.Error(err.message));
+          });
 
-				}, function (err) {
-					done(sass.types.Error(err.message));
-				});
-			}
-		}
-	};
+        }, function (err) {
+          done(sass.types.Error(err.message));
+        });
+      }
+    }
+  };
 };
-
-
-
