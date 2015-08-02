@@ -44,15 +44,20 @@ module.exports = function(eyeglass, sass) {
             registeredAssets.forEach(function(asset) {
               asset = sassUtils.castToJs(asset);
 
-              asset.forEach(function(assetData, assetName) {
-                assetName = sassUtils.castToJs(assetName);
-                assetData = sassUtils.castToJs(assetData);
+              // asset.forEach(function(assetData, assetName) {
+              //   assetName = sassUtils.castToJs(assetName);
+              //   assetData = sassUtils.castToJs(assetData);
 
-                if (assetName === file) {
-                  return resolve(assetData.coerce.get("filepath"));
-                }
+              //   if (assetName === file) {
+              //     return resolve(assetData.coerce.get("filepath"));
+              //   }
 
-              });
+              // });
+
+              var file = asset.coerce.get(file);
+              if (file) {
+                return resolve(file.coerce.get("filepath"));
+              }
 
             });
           }
@@ -83,7 +88,8 @@ module.exports = function(eyeglass, sass) {
           var imageDimensions = getDimensions(success);
 
           imageDimensions.then(function (dimensions) {
-            done(sass.types.String(dimensions.width.sassString()));
+            done(sassUtils.castToSass(dimensions.width));
+            //done(sass.types.String(dimensions.width.sassString()));
           }, function (err) {
             done(sass.types.Error(err.message));
           });
@@ -107,7 +113,8 @@ module.exports = function(eyeglass, sass) {
           var imageDimensions = getDimensions(success);
 
           imageDimensions.then(function (dimensions) {
-            done(sass.types.String(dimensions.height.sassString()));
+            done(sassUtils.castToSass(dimensions.height));
+            //done(sass.types.String(dimensions.height.sassString()));
           }, function (err) {
             done(sass.types.Error(err.message));
           });
@@ -131,7 +138,10 @@ module.exports = function(eyeglass, sass) {
           var imageDimensions = getDimensions(success);
 
           imageDimensions.then(function (dimensions) {
-            done(sass.types.String(dimensions.width.sassString() + " " + dimensions.height.sassString()));
+            dimensions = [dimensions.width, dimensions.height];
+            dimensions = sassUtils.castToSass(dimensions);
+            dimensions.setSeparator = false;
+            done(dimensions);
           }, function (err) {
             done(sass.types.Error(err.message));
           });
