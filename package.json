@@ -1,13 +1,13 @@
 {
   "name": "eyeglass-image-dimensions",
-  "version": "0.0.1",
-  "description": "Grab image dimensions inside SASS",
+  "description": "Grab image dimensions inside Sass",
+  "version": "0.1.0",
   "author": {
     "name": "Jack Westbrook",
     "email": "jack.westbrook@gmail.com",
     "url": "https://github.com/jackw"
   },
-  "license": "Apache-2.0",
+  "license": "Apache License 2.0",
   "README": "README.md",
   "repository": {
     "type": "git",
@@ -15,14 +15,11 @@
   },
   "keywords": [
     "sass",
-    "eyeglass-module"
+    "eyeglass-module",
+    "image dimensions"
   ],
-  "eyeglass": {
-    "name": "image-dimensions",
-    "exports": "eyeglass-exports.js"
-  },
+  "main": "eyeglass-exports.js",
   "devDependencies": {
-    "eyeglass": "^0.3.0",
     "eyeglass-dev-eslint": "^1.0.1",
     "gulp": "^3.9.0",
     "gulp-eslint": "^0.15.0",
@@ -30,6 +27,7 @@
     "should": "^7.0.2"
   },
   "dependencies": {
+    "eyeglass": "*",
     "image-size": "^0.3.5",
     "node-sass-utils": "^1.1.1",
     "promise": "^7.0.3"

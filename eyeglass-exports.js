@@ -43,20 +43,10 @@ module.exports = function(eyeglass, sass) {
             // loop assets and check for a matching file.
             registeredAssets.forEach(function(asset) {
               asset = sassUtils.castToJs(asset);
+              var assetData = asset.coerce.get(file);
 
-              // asset.forEach(function(assetData, assetName) {
-              //   assetName = sassUtils.castToJs(assetName);
-              //   assetData = sassUtils.castToJs(assetData);
-
-              //   if (assetName === file) {
-              //     return resolve(assetData.coerce.get("filepath"));
-              //   }
-
-              // });
-
-              var file = asset.coerce.get(file);
-              if (file) {
-                return resolve(file.coerce.get("filepath"));
+              if (assetData) {
+                return resolve(assetData.coerce.get("filepath"));
               }
 
             });
@@ -89,7 +79,6 @@ module.exports = function(eyeglass, sass) {
 
           imageDimensions.then(function (dimensions) {
             done(sassUtils.castToSass(dimensions.width));
-            //done(sass.types.String(dimensions.width.sassString()));
           }, function (err) {
             done(sass.types.Error(err.message));
           });
@@ -114,7 +103,6 @@ module.exports = function(eyeglass, sass) {
 
           imageDimensions.then(function (dimensions) {
             done(sassUtils.castToSass(dimensions.height));
-            //done(sass.types.String(dimensions.height.sassString()));
           }, function (err) {
             done(sass.types.Error(err.message));
           });
@@ -140,7 +128,8 @@ module.exports = function(eyeglass, sass) {
           imageDimensions.then(function (dimensions) {
             dimensions = [dimensions.width, dimensions.height];
             dimensions = sassUtils.castToSass(dimensions);
-            dimensions.setSeparator = false;
+            dimensions.setSeparator(false);
+
             done(dimensions);
           }, function (err) {
             done(sass.types.Error(err.message));
