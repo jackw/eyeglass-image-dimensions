@@ -25,3 +25,11 @@ returns the height of the image in pixels.
 ```
 height: image-height($image);
 ```
+
+
+### image-dimensions
+returns a space separated list consisting of the width and height of an image in pixels.
+
+```
+background-size: image-dimensions($image);
+```
