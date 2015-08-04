@@ -8,11 +8,43 @@ var Promise = require("promise");
 module.exports = function(eyeglass, sass) {
   var sassUtils = require("node-sass-utils")(sass);
 
-  function getDimensions(file) {
+  /**
+   * ImageDimensions
+   * @param {String}    assetPath         the file path from sass
+   * @param {Map}       registeredAssets  registered assets from sass
+   * @param {Function}  callback          callback function to deliver results
+   */
+  function ImageDimensions (assetPath, registeredAssets, callback) {
+    sassUtils.assertType(assetPath, "string");
+    sassUtils.assertType(registeredAssets, "map");
 
+    var self = this;
+
+    var getPath = self.checkImagePath(assetPath.getValue(), registeredAssets);
+    getPath.then(function (success) {
+
+      var imageDimensions = self.getDimensions(success);
+
+      imageDimensions.then(function (dimensions) {
+        callback(null, dimensions);
+      }, function (err) {
+        callback(err, null);
+      });
+
+    }, function (err) {
+      callback(err, null);
+    });
+  }
+
+  /**
+   * Given the path to an image, return it's dimensions.
+   * @param  {String} assetPath the file path
+   * @return {Object}           error or image dimensions
+   */
+  ImageDimensions.prototype.getDimensions = function (assetPath) {
     return new Promise(function (resolve, reject) {
 
-      sizeOf(file, function (err, dimensions) {
+      sizeOf(assetPath, function (err, dimensions) {
 
         if (err) {
           return reject(err);
@@ -25,17 +57,21 @@ module.exports = function(eyeglass, sass) {
       });
 
     });
-
   }
 
-
-  function checkImagePath(file, registeredAssets) {
+  /**
+   * Given the path to an image, check it exists including in assets.
+   * @param  {String} assetPath     The original path from sass
+   * @param  {Map} registeredAssets The assets from sass
+   * @return {String | Object}      Either the path or the error object
+   */
+  ImageDimensions.prototype.checkImagePath = function(assetPath, registeredAssets) {
 
     registeredAssets = sassUtils.castToJs(registeredAssets);
 
     return new Promise(function (resolve, reject) {
 
-      fs.lstat(file, function(err, stats) {
+      fs.lstat(assetPath, function(err, stats) {
 
         if (err) {
           // can"t find file from path provided so check assets
@@ -43,7 +79,7 @@ module.exports = function(eyeglass, sass) {
             // loop assets and check for a matching file.
             registeredAssets.forEach(function(asset) {
               asset = sassUtils.castToJs(asset);
-              var assetData = asset.coerce.get(file);
+              var assetData = asset.coerce.get(assetPath);
 
               if (assetData) {
                 return resolve(assetData.coerce.get("filepath"));
@@ -55,10 +91,13 @@ module.exports = function(eyeglass, sass) {
           return reject(err);
         }
 
-        return resolve(file);
+        //TODO: Maybe test if path is a directory?
+
+        return resolve(assetPath);
       });
 
     });
+
   }
 
   return {
@@ -67,78 +106,41 @@ module.exports = function(eyeglass, sass) {
       "eg-image-width($assetPath, $registeredAssets)":
       function(assetPath, registeredAssets, done) {
 
-        sassUtils.assertType(assetPath, "string");
-        sassUtils.assertType(registeredAssets, "map");
-
-        assetPath = assetPath.getValue();
-
-        var imageInfo = checkImagePath(assetPath, registeredAssets);
-
-        imageInfo.then(function (success) {
-          var imageDimensions = getDimensions(success);
-
-          imageDimensions.then(function (dimensions) {
-            done(sassUtils.castToSass(dimensions.width));
-          }, function (err) {
+        var imageDim = new ImageDimensions(assetPath, registeredAssets, function(err, dimensions) {
+          if (err) {
             done(sass.types.Error(err.message));
-          });
-
-        }, function (err) {
-          done(sass.types.Error(err.message));
+          }
+          done(sassUtils.castToSass(dimensions.width));
         });
 
       },
       "eg-image-height($assetPath, $registeredAssets)":
       function(assetPath, registeredAssets, done) {
 
-        sassUtils.assertType(assetPath, "string");
-        sassUtils.assertType(registeredAssets, "map");
-
-        assetPath = assetPath.getValue();
-
-        var imageInfo = checkImagePath(assetPath, registeredAssets);
-
-        imageInfo.then(function (success) {
-          var imageDimensions = getDimensions(success);
-
-          imageDimensions.then(function (dimensions) {
-            done(sassUtils.castToSass(dimensions.height));
-          }, function (err) {
+        var imageDim = new ImageDimensions(assetPath, registeredAssets, function(err, dimensions) {
+          if (err) {
             done(sass.types.Error(err.message));
-          });
-
-        }, function (err) {
-          done(sass.types.Error(err.message));
+          }
+          done(sassUtils.castToSass(dimensions.height));
         });
 
       },
       "eg-image-dimensions($assetPath, $registeredAssets)":
       function(assetPath, registeredAssets, done) {
 
-        sassUtils.assertType(assetPath, "string");
-        sassUtils.assertType(registeredAssets, "map");
-
-        assetPath = assetPath.getValue();
-
-        var imageInfo = checkImagePath(assetPath, registeredAssets);
-
-        imageInfo.then(function (success) {
-          var imageDimensions = getDimensions(success);
-
-          imageDimensions.then(function (dimensions) {
-            dimensions = [dimensions.width, dimensions.height];
-            dimensions = sassUtils.castToSass(dimensions);
-            dimensions.setSeparator(false);
-
-            done(dimensions);
-          }, function (err) {
+        var imageDim = new ImageDimensions(assetPath, registeredAssets, function(err, dimensions) {
+          if (err) {
             done(sass.types.Error(err.message));
-          });
+          }
+          dimensions = [dimensions.width, dimensions.height];
+          dimensions = sassUtils.castToSass(dimensions);
+          dimensions.setSeparator(false);
 
-        }, function (err) {
-          done(sass.types.Error(err.message));
+          done(dimensions);
         });
+
       }
     }
   };
+
 };
