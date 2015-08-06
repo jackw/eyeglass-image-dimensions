@@ -9,7 +9,7 @@ module.exports = function(eyeglass, sass) {
   var sassUtils = require("node-sass-utils")(sass);
 
   /**
-   * ImageDimensions
+   * ImageDimensions constructor.
    * @param {String}    assetPath         the file path from sass
    * @param {Map}       registeredAssets  registered assets from sass
    * @param {Function}  callback          callback function to deliver results
@@ -57,7 +57,7 @@ module.exports = function(eyeglass, sass) {
       });
 
     });
-  }
+  };
 
   /**
    * Given the path to an image, check it exists including in assets.
@@ -70,6 +70,13 @@ module.exports = function(eyeglass, sass) {
     registeredAssets = sassUtils.castToJs(registeredAssets);
 
     return new Promise(function (resolve, reject) {
+
+      // Given an absolute path make sure we're looking in the right location.
+      if (path.isAbsolute(assetPath)) {
+        assetPath = path.join(eyeglass.options.root, assetPath);
+      }
+
+      console.log(path.join(eyeglass.options.root, assetPath));
 
       fs.lstat(assetPath, function(err, stats) {
 
@@ -91,14 +98,12 @@ module.exports = function(eyeglass, sass) {
           return reject(err);
         }
 
-        //TODO: Maybe test if path is a directory?
-
         return resolve(assetPath);
       });
 
     });
 
-  }
+  };
 
   return {
     sassDir: path.join(__dirname, "sass"),
@@ -132,8 +137,7 @@ module.exports = function(eyeglass, sass) {
           if (err) {
             done(sass.types.Error(err.message));
           }
-          dimensions = [dimensions.width, dimensions.height];
-          dimensions = sassUtils.castToSass(dimensions);
+          dimensions = sassUtils.castToSass([dimensions.width, dimensions.height]);
           dimensions.setSeparator(false);
 
           done(dimensions);
