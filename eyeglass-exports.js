@@ -76,8 +76,6 @@ module.exports = function(eyeglass, sass) {
         assetPath = path.join(eyeglass.options.root, assetPath);
       }
 
-      console.log(path.join(eyeglass.options.root, assetPath));
-
       fs.lstat(assetPath, function(err, stats) {
 
         if (err) {
