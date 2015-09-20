@@ -1,7 +1,7 @@
 {
   "name": "eyeglass-image-dimensions",
   "description": "An eyeglass module that provides libsass the same image dimensions functionality found in ruby compass.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Jack Westbrook",
     "email": "jack.westbrook@gmail.com",
@@ -18,7 +18,7 @@
     "eyeglass-module",
     "image dimensions"
   ],
-  "eyeglass" : {
+  "eyeglass": {
     "name": "image-dimensions",
     "exports": "eyeglass-exports.js"
   },
