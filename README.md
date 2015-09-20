@@ -1,13 +1,19 @@
 # eyeglass-image-dimensions
 An eyeglass module that provides LibSass the same image dimensions functionality found in ruby compass.
 
-Setup:
+## Setup
 
-Right now there isn't an npm package so you'll need to manually download and add it to your project's node_modules folder then run npm install to bring down dependancies.
+To use image dimensions first install eyeglass then eyeglass-image-dimensions:
+
+
+	npm install eyeglass --save-dev
+	npm install eyeglass-image-dimensions --save-dev
+
+
 Then add the following to your sass file/s:
 
 ```
-@import 'eyeglass-image-dimensions';
+@import 'image-dimensions';
 ```
 
 ## Usage
