@@ -1,5 +1,5 @@
 # eyeglass-image-dimensions
-An eyeglass module aimed at providing sass the same image dimensions functionality found in ruby compass.
+An eyeglass module that provides LibSass the same image dimensions functionality found in ruby compass.
 
 Setup:
 
