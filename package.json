@@ -20,7 +20,8 @@
   ],
   "eyeglass": {
     "name": "image-dimensions",
-    "exports": "eyeglass-exports.js"
+    "exports": "eyeglass-exports.js",
+    "needs": "^0.7.0"
   },
   "devDependencies": {
     "eyeglass-dev-eslint": "^1.0.1",
