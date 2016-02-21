@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/jackw/eyeglass-image-dimensions.svg?branch=develop)](https://travis-ci.org/jackw/eyeglass-image-dimensions)
+[![NPM Downloads](https://img.shields.io/npm/dm/eyeglass-image-dimensions.svg)](http://npm-stat.com/charts.html?package=eyeglass-image-dimensions&author=&from=&to=)
+[![devDependency Status](https://david-dm.org/jackw/eyeglass-image-dimensions/dev-status.svg)](https://david-dm.org/jackw/eyeglass-image-dimensions#info=devDependencies)
 # eyeglass-image-dimensions
-An eyeglass module that provides LibSass the same image dimensions functionality found in ruby compass.
+An eyeglass module to give LibSass the same image dimension functionality found in ruby compass.
 
 ## Setup
 

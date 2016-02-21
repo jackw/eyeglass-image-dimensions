@@ -3,7 +3,7 @@
 var fs = require("fs");
 var path = require('path');
 var sass = require("node-sass");
-var Eyeglass = require("eyeglass").Eyeglass;
+var eyeglass = require("eyeglass");
 var assert = require("assert");
 
 
@@ -19,13 +19,17 @@ describe("image dimensions module", function () {
                     "  background-height: 550px;\n" +
                     "  background-width: 400px; }\n";
 
-    var eyeglass = new Eyeglass({
-      root: path.join(__dirname, 'assets'),
-      data: sassInput
-    }, sass);
+    var options = {
+      data: sassInput,
+      eyeglass: {
+        engines: {
+          sass: sass
+        },
+        root: path.join(__dirname, 'assets')
+      }
+    };
 
-    sass.render(eyeglass.sassOptions(), function(error, result) {
-      // console.log(result.css.toString());
+    sass.render(eyeglass(options), function(error, result) {
       assert(!error, error && error.message);
       assert.equal(cssOutput, result.css.toString());
       done();
@@ -44,12 +48,17 @@ describe("image dimensions module", function () {
                     "  background-height: 300px;\n" +
                     "  background-width: 150px; }\n";
 
-    var eyeglass = new Eyeglass({
-      root: path.join(__dirname, 'assets'),
-      data: sassInput
-    }, sass);
+    var options = {
+      data: sassInput,
+      eyeglass: {
+        engines: {
+          sass: sass
+        },
+        root: path.join(__dirname, 'assets')
+      }
+    };
 
-    sass.render(eyeglass.sassOptions(), function(error, result) {
+    sass.render(eyeglass(options), function(error, result) {
       assert(!error, error && error.message);
       assert.equal(cssOutput, result.css.toString());
       done();
@@ -70,21 +79,25 @@ describe("image dimensions module", function () {
 
     var rootDir = path.join(__dirname, 'assets');
 
-    var eyeglass = new Eyeglass({
-      root: rootDir,
-      data: sassInput
-    }, sass);
+    var options = {
+      data: sassInput,
+      eyeglass: {
+        engines: {
+          sass: sass
+        },
+        root: rootDir,
+        assets: {
+          sources: [{directory: path.join(rootDir, 'images')}]
+        }
+      }
+    };
 
-    eyeglass.assets.addSource(path.join(rootDir, 'images'));
-
-    sass.render(eyeglass.sassOptions(), function(error, result) {
+    sass.render(eyeglass(options), function(error, result) {
       assert(!error, error && error.message);
       assert.equal(cssOutput, result.css.toString());
       done();
     });
 
   });
-
-
 
 });
