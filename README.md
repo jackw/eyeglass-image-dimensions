@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jackw/eyeglass-image-dimensions.svg?branch=develop)](https://travis-ci.org/jackw/eyeglass-image-dimensions)
 # eyeglass-image-dimensions
 An eyeglass module that provides LibSass the same image dimensions functionality found in ruby compass.
 
