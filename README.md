@@ -9,8 +9,7 @@ An eyeglass module to give LibSass the same image dimension functionality found 
 To use image dimensions first install eyeglass then eyeglass-image-dimensions:
 
 
-	npm install eyeglass --save-dev
-	npm install eyeglass-image-dimensions --save-dev
+	npm install eyeglass eyeglass-image-dimensions --save-dev
 
 
 Then add the following to your sass file/s:
