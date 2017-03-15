@@ -29,7 +29,7 @@
     "eyeglass-dev-eslint": "^2.0.0",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.1.1",
-    "gulp-mocha": ">=2.2.0",
+    "gulp-mocha": "^2.2.0",
     "node-sass": ">=3.4.0",
     "should": ">=9.0.0"
   },
